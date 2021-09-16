@@ -1,7 +1,6 @@
 package com.udacity.asteroidradar.data.remote.api
 
 import com.udacity.asteroidradar.data.remote.dto.PictureOfDay
-import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -18,5 +17,5 @@ interface NasaApi {
     @GET("planetary/apod?")
     suspend fun getApod(
         @Query("api_key") apiKey: String
-    ): Deferred<PictureOfDay>
+    ): PictureOfDay
 }

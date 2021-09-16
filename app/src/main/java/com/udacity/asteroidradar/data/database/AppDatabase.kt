@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import com.udacity.asteroidradar.data.database.asteroid.AsteroidDao
 import com.udacity.asteroidradar.data.database.asteroid.AsteroidEntity
 import com.udacity.asteroidradar.data.database.asteroid.DateTypeConverter
+import com.udacity.asteroidradar.data.database.picture.PictureDao
 import com.udacity.asteroidradar.data.database.picture.PictureEntity
 
 @Database(
@@ -18,6 +19,7 @@ import com.udacity.asteroidradar.data.database.picture.PictureEntity
 @TypeConverters(DateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract val asteroidDao: AsteroidDao
+    abstract val pictureDao: PictureDao
 
     companion object {
         fun getInstance(context: Context): AppDatabase {
