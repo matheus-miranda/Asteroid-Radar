@@ -3,6 +3,7 @@ package com.udacity.asteroidradar
 import android.app.Application
 import com.udacity.asteroidradar.data.di.databaseModule
 import com.udacity.asteroidradar.data.di.networkModule
+import com.udacity.asteroidradar.data.di.repositoryModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -14,7 +15,7 @@ class AsteroidApp : Application() {
 
         startKoin {
             androidContext(this@AsteroidApp)
-            modules(networkModule, databaseModule)
+            modules(networkModule, databaseModule, repositoryModule)
         }
 
         Timber.plant(Timber.DebugTree())

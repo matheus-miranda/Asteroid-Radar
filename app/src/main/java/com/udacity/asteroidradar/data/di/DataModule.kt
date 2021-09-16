@@ -6,6 +6,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.core.Constants.BASE_URL
 import com.udacity.asteroidradar.data.database.AppDatabase
 import com.udacity.asteroidradar.data.remote.api.NasaApi
+import com.udacity.asteroidradar.data.repositoryimpl.NasaRepositoryImpl
+import com.udacity.asteroidradar.domain.repository.NasaRepository
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -50,4 +52,11 @@ private inline fun <reified T> createApodService(factory: MoshiConverterFactory)
  */
 val databaseModule = module {
     single { AppDatabase.getInstance(context = androidApplication()) }
+}
+
+/**
+ * Repository module
+ */
+val repositoryModule = module {
+    factory<NasaRepository> { NasaRepositoryImpl(apiService = get(), database = get()) }
 }
