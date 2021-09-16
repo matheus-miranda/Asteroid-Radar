@@ -1,6 +1,6 @@
-package com.udacity.asteroidradar.data.services.api
+package com.udacity.asteroidradar.data.remote.api
 
-import com.udacity.asteroidradar.data.services.dto.PictureOfDay
+import com.udacity.asteroidradar.data.remote.dto.PictureOfDay
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
