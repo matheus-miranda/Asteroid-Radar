@@ -9,14 +9,14 @@ import retrofit2.http.Query
 interface NasaApi {
 
     @GET("neo/rest/v1/feed?")
-    fun getAsteroids(
+    suspend fun getAsteroids(
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String,
         @Query("api_key") apiKey: String
     ): Response<String>
 
     @GET("planetary/apod?")
-    fun getApod(
+    suspend fun getApod(
         @Query("api_key") apiKey: String
     ): Deferred<PictureOfDay>
 }
