@@ -7,6 +7,7 @@ import retrofit2.http.Query
 
 interface NasaApi {
 
+    @Scalar
     @GET("neo/rest/v1/feed?")
     suspend fun getAsteroids(
         @Query("start_date") startDate: String,
@@ -14,6 +15,7 @@ interface NasaApi {
         @Query("api_key") apiKey: String
     ): Response<String>
 
+    @Json
     @GET("planetary/apod?")
     suspend fun getApod(
         @Query("api_key") apiKey: String
