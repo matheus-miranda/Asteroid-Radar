@@ -5,8 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.udacity.asteroidradar.data.database.asteroid.AsteroidDao
+import com.udacity.asteroidradar.data.database.asteroid.AsteroidEntity
+import com.udacity.asteroidradar.data.database.asteroid.DateTypeConverter
+import com.udacity.asteroidradar.data.database.picture.PictureEntity
 
-@Database(entities = [AsteroidEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [AsteroidEntity::class, PictureEntity::class],
+    version = 1,
+    exportSchema = false
+)
 @TypeConverters(DateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract val asteroidDao: AsteroidDao

@@ -1,6 +1,6 @@
 package com.udacity.asteroidradar.data.mappers
 
-import com.udacity.asteroidradar.data.database.AsteroidEntity
+import com.udacity.asteroidradar.data.database.asteroid.AsteroidEntity
 import com.udacity.asteroidradar.domain.model.Asteroid
 
 fun List<AsteroidEntity>.asDomainObject(): Array<Asteroid> {
