@@ -53,7 +53,15 @@ class NasaRepositoryImpl(
     }
 
     override suspend fun getPictureFromNetwork(apiKey: String): Picture {
-        return apiService.getApod(apiKey).asDomainObject()
+        var picture = Picture("", "", "")
+        try {
+            picture = apiService.getApod(apiKey).asDomainObject()
+        } catch (e: HttpException) {
+            Timber.e(e.message())
+        } catch (e: IOException) {
+            Timber.e(e.message)
+        }
+        return picture
     }
 
     /*******************************************************************************
