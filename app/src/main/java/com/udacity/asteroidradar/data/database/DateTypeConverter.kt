@@ -1,8 +1,8 @@
 package com.udacity.asteroidradar.data.database
 
-import android.util.Log
 import androidx.room.TypeConverter
 import com.udacity.asteroidradar.core.Constants
+import timber.log.Timber
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,7 +26,7 @@ class DateTypeConverter {
             try {
                 return getDateFormat().parse(dateString)
             } catch (e: ParseException) {
-                Log.e("DateType", e.message.toString())
+                Timber.e(e.message.toString())
             }
         }
         return null
