@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.udacity.asteroidradar.data.database.asteroid.AsteroidDao
 import com.udacity.asteroidradar.data.database.asteroid.AsteroidEntity
-import com.udacity.asteroidradar.data.database.asteroid.DateTypeConverter
 import com.udacity.asteroidradar.data.database.picture.PictureDao
 import com.udacity.asteroidradar.data.database.picture.PictureEntity
 

@@ -7,6 +7,7 @@ fun PictureOfDay.asDomainObject(): Picture {
     return Picture(
         title = title,
         mediaType = mediaType,
-        url = url
+        url = url,
+        date = date
     )
 }

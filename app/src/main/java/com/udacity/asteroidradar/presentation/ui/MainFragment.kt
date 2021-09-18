@@ -24,7 +24,7 @@ class MainFragment : Fragment() {
         binding.viewModel = viewModel
 
         bindObservers()
-        fetchFromNetwork()
+        refreshCache()
 
         setHasOptionsMenu(true)
 
@@ -37,14 +37,14 @@ class MainFragment : Fragment() {
                 State.Loading -> Timber.e("Loading")
                 is State.Error -> Timber.e(state.error.message)
                 is State.Success -> {
-                    Timber.e("${state.data.title}\n${state.data.url}\n${state.data.mediaType}")
+                    Timber.e("${state?.data?.title}\n${state?.data?.url}\n${state?.data?.mediaType}")
                 }
             }
         })
     }
 
-    private fun fetchFromNetwork() {
-        viewModel.fetchFromNetwork()
+    private fun refreshCache() {
+        viewModel.refreshPictureCache()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

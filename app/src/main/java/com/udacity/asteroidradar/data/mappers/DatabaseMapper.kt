@@ -39,7 +39,8 @@ fun PictureEntity.asDomainObject(): Picture {
     return Picture(
         title = this.title,
         mediaType = this.mediaType,
-        url = this.url
+        url = this.url,
+        date = this.date
     )
 }
 
@@ -47,6 +48,7 @@ fun Picture.asDatabaseModel(): PictureEntity {
     return PictureEntity(
         title = this.title,
         url = this.url,
-        mediaType = this.mediaType
+        mediaType = this.mediaType,
+        date = this.date
     )
 }

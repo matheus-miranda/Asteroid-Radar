@@ -1,4 +1,4 @@
-package com.udacity.asteroidradar.data.database.asteroid
+package com.udacity.asteroidradar.data.database
 
 import androidx.room.TypeConverter
 import com.udacity.asteroidradar.core.Constants

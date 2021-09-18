@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.presentation.viewmodel
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.core.State
 import com.udacity.asteroidradar.domain.model.Picture
+import com.udacity.asteroidradar.domain.usecases.picture.DeletePicturesFromDbUseCase
 import com.udacity.asteroidradar.domain.usecases.picture.GetPictureFromDbUseCase
 import com.udacity.asteroidradar.domain.usecases.picture.GetPictureFromNetworkUseCase
 import com.udacity.asteroidradar.domain.usecases.picture.SavePictureToDbUseCase
@@ -17,6 +18,7 @@ class MainViewModel(
     private val getPictureFromDb: GetPictureFromDbUseCase,
     private val getPictureFromNetworkUseCase: GetPictureFromNetworkUseCase,
     private val savePictureToDbUseCase: SavePictureToDbUseCase,
+    private val deletePicturesFromDbUseCase: DeletePicturesFromDbUseCase
 ) : ViewModel() {
 
     private val _pictureState = MutableLiveData<State<Picture>>()
@@ -41,11 +43,11 @@ class MainViewModel(
         }
     }
 
-    fun fetchFromNetwork() {
+    fun refreshPictureCache() {
         viewModelScope.launch {
             //val picture = getPictureFromNetworkUseCase(BuildConfig.API_KEY)
             val picture = getPictureFromNetworkUseCase("DEMO_KEY")
-            //deletePicturesFromDbUseCase()
+            deletePicturesFromDbUseCase()
             savePictureToDbUseCase(picture)
         }
     }

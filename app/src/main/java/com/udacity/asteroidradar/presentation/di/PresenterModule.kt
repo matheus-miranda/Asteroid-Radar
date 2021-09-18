@@ -11,6 +11,7 @@ val presentationModule = module {
             getPictureFromDb = get(),
             getPictureFromNetworkUseCase = get(),
             savePictureToDbUseCase = get(),
+            deletePicturesFromDbUseCase = get()
         )
     }
 }
