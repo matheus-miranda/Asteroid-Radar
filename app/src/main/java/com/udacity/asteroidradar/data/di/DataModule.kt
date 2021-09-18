@@ -7,20 +7,36 @@ import com.udacity.asteroidradar.data.remote.api.NasaApi
 import com.udacity.asteroidradar.data.remote.api.ScalarOrMoshiConverter
 import com.udacity.asteroidradar.data.repositoryimpl.NasaRepositoryImpl
 import com.udacity.asteroidradar.domain.repository.NasaRepository
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import timber.log.Timber
 
 /**
  * We need to make the call depending on which Converter factory will be used
  */
 val networkModule = module {
-    single { createService<NasaApi>() }
+
+    factory {
+        val interceptor = HttpLoggingInterceptor { logger ->
+            Timber.e("OkHttp: $logger")
+        }
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
+    }
+
+    single { createService<NasaApi>(client = get()) }
+
 }
 
-private inline fun <reified T> createService(): T {
+private inline fun <reified T> createService(client: OkHttpClient): T {
     return Retrofit.Builder()
         .baseUrl(Constants.BASE_URL)
+        .client(client)
         .addConverterFactory(ScalarOrMoshiConverter.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build().create(T::class.java)

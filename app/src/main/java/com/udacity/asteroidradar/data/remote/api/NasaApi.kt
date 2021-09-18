@@ -8,7 +8,7 @@ import retrofit2.http.Query
 interface NasaApi {
 
     @Scalar
-    @GET("neo/rest/v1/feed?")
+    @GET("neo/rest/v1/feed")
     suspend fun getAsteroids(
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String,
@@ -16,7 +16,7 @@ interface NasaApi {
     ): Response<String>
 
     @Json
-    @GET("planetary/apod?")
+    @GET("planetary/apod")
     suspend fun getApod(
         @Query("api_key") apiKey: String
     ): PictureOfDay

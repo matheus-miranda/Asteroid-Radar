@@ -6,5 +6,11 @@ import org.koin.dsl.module
 
 val presentationModule = module {
 
-    viewModel { MainViewModel(getPictureFromDb = get(), cachePictureUseCase = get()) }
+    viewModel {
+        MainViewModel(
+            getPictureFromDb = get(),
+            getPictureFromNetworkUseCase = get(),
+            savePictureToDbUseCase = get(),
+        )
+    }
 }

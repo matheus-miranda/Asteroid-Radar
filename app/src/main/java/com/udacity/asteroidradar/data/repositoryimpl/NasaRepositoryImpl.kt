@@ -53,13 +53,19 @@ class NasaRepositoryImpl(
     }
 
     override suspend fun getPictureFromNetwork(apiKey: String): Picture {
-        var picture = Picture("", "", "")
+        // Default picture
+        var picture = Picture(
+            "North America and the Pelican",
+            "image",
+            "https://apod.nasa.gov/apod/image/2109/NGC7000_SHO_AndrewKlinger_res65_sig1024.jpg"
+        )
         try {
             picture = apiService.getApod(apiKey).asDomainObject()
+            Timber.e(picture.mediaType)
         } catch (e: HttpException) {
-            Timber.e(e.message())
+            Timber.e("HttpException: " + e.response()?.errorBody()?.toString())
         } catch (e: IOException) {
-            Timber.e(e.message)
+            Timber.e("IOException: " + e.message)
         }
         return picture
     }
@@ -88,10 +94,9 @@ class NasaRepositoryImpl(
     }
 
     override fun getPictureFromDatabase(): LiveData<Picture> {
-        val picture = Transformations.map(pictureDao.getPicture()) {
-            it.asDomainObject()
+        return Transformations.map(pictureDao.getPicture()) { databasePicture ->
+            databasePicture?.asDomainObject()
         }
-        return picture
     }
 
     override suspend fun savePictureToDatabase(picture: Picture) {

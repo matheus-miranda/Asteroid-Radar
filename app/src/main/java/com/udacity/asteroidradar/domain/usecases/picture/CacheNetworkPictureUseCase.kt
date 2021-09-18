@@ -6,7 +6,9 @@ class CacheNetworkPictureUseCase(private val repository: NasaRepository) {
 
     suspend operator fun invoke(apiKey: String) {
         val picture = repository.getPictureFromNetwork(apiKey)
-        repository.deletePicturesFromDatabase()
-        repository.savePictureToDatabase(picture)
+        if (picture.mediaType == "image") {
+            //repository.deletePicturesFromDatabase()
+            repository.savePictureToDatabase(picture)
+        }
     }
 }

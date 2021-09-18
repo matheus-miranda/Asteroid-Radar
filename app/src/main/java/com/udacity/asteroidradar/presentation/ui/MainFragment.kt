@@ -14,14 +14,17 @@ class MainFragment : Fragment() {
 
     private val viewModel: MainViewModel by viewModel()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
 
         bindObservers()
+        fetchFromNetwork()
 
         setHasOptionsMenu(true)
 
@@ -29,17 +32,19 @@ class MainFragment : Fragment() {
     }
 
     private fun bindObservers() {
-        viewModel.state.observe(viewLifecycleOwner, { state ->
+        viewModel.pictureState.observe(viewLifecycleOwner, { state ->
             when (state) {
                 State.Loading -> Timber.e("Loading")
                 is State.Error -> Timber.e(state.error.message)
                 is State.Success -> {
-                    Timber.e(state.data.title)
-                    Timber.e(state.data.url)
-                    Timber.e(state.data.mediaType)
+                    Timber.e("${state.data.title}\n${state.data.url}\n${state.data.mediaType}")
                 }
             }
         })
+    }
+
+    private fun fetchFromNetwork() {
+        viewModel.fetchFromNetwork()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

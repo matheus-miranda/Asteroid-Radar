@@ -1,11 +1,11 @@
 package com.udacity.asteroidradar.presentation.viewmodel
 
 import androidx.lifecycle.*
-import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.core.State
 import com.udacity.asteroidradar.domain.model.Picture
-import com.udacity.asteroidradar.domain.usecases.picture.CacheNetworkPictureUseCase
 import com.udacity.asteroidradar.domain.usecases.picture.GetPictureFromDbUseCase
+import com.udacity.asteroidradar.domain.usecases.picture.GetPictureFromNetworkUseCase
+import com.udacity.asteroidradar.domain.usecases.picture.SavePictureToDbUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -15,14 +15,14 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val getPictureFromDb: GetPictureFromDbUseCase,
-    private val cachePictureUseCase: CacheNetworkPictureUseCase,
+    private val getPictureFromNetworkUseCase: GetPictureFromNetworkUseCase,
+    private val savePictureToDbUseCase: SavePictureToDbUseCase,
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<State<Picture>>()
-    val state: LiveData<State<Picture>> get() = _state
+    private val _pictureState = MutableLiveData<State<Picture>>()
+    val pictureState: LiveData<State<Picture>> get() = _pictureState
 
     init {
-        refreshPictureCache()
         getPictures()
     }
 
@@ -30,20 +30,23 @@ class MainViewModel(
         viewModelScope.launch {
             getPictureFromDb().asFlow().flowOn(Dispatchers.Main)
                 .onStart {
-                    _state.value = State.Loading
+                    _pictureState.value = State.Loading
                 }
                 .catch {
-                    _state.value = State.Error(it)
+                    _pictureState.value = State.Error(it)
                 }
                 .collect {
-                    _state.value = State.Success(it)
+                    _pictureState.value = State.Success(it)
                 }
         }
     }
 
-    private fun refreshPictureCache() {
+    fun fetchFromNetwork() {
         viewModelScope.launch {
-            cachePictureUseCase(BuildConfig.API_KEY)
+            //val picture = getPictureFromNetworkUseCase(BuildConfig.API_KEY)
+            val picture = getPictureFromNetworkUseCase("DEMO_KEY")
+            //deletePicturesFromDbUseCase()
+            savePictureToDbUseCase(picture)
         }
     }
 }
