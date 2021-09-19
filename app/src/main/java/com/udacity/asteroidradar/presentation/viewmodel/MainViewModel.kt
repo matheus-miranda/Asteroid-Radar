@@ -25,8 +25,11 @@ class MainViewModel(
     val pictureState: LiveData<State<Picture>> get() = _pictureState
 
     init {
-        getPictures()
+        refreshPictureCache()
+        //getPictures()
     }
+
+    val picture = getPictureFromDb()
 
     private fun getPictures() {
         viewModelScope.launch {
@@ -43,7 +46,7 @@ class MainViewModel(
         }
     }
 
-    fun refreshPictureCache() {
+    private fun refreshPictureCache() {
         viewModelScope.launch {
             //val picture = getPictureFromNetworkUseCase(BuildConfig.API_KEY)
             val picture = getPictureFromNetworkUseCase("DEMO_KEY")

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -27,8 +28,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/apod"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/placeholder_picture_of_day" />
+                app:astronomyPicture="@{viewModel.picture.url}"
+                tools:srcCompat="@drawable/placeholder_picture_of_day" />
 
             <TextView
                 android:id="@+id/textView"
@@ -37,10 +40,11 @@
                 android:layout_gravity="bottom"
                 android:background="#55010613"
                 android:padding="16dp"
-                android:text="@string/image_of_the_day"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:astronomyTitle="@{viewModel.picture.title}"
+                tools:text="@string/image_of_the_day" />
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
