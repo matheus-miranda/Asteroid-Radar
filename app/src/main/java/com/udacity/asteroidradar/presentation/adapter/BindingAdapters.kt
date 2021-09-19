@@ -52,8 +52,8 @@ fun bindAstronomyPicture(imageView: ImageView, imageUrl: String?) {
     }
 }
 
-@BindingAdapter("astronomyTitle")
-fun bindAstronomyPicTitle(textView: TextView, title: String?) {
+@BindingAdapter("apiText")
+fun bindSimpleText(textView: TextView, title: String?) {
     title?.let {
         textView.text = title
     }

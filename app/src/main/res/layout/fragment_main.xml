@@ -43,7 +43,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:astronomyTitle="@{viewModel.picture.title}"
+                app:apiText="@{viewModel.picture.title}"
                 tools:text="@string/image_of_the_day" />
         </FrameLayout>
 
