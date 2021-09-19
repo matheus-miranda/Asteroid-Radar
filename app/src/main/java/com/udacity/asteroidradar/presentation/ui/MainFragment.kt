@@ -2,11 +2,13 @@ package com.udacity.asteroidradar.presentation.ui
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.core.State
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.presentation.adapter.AsteroidAdapter
 import com.udacity.asteroidradar.presentation.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -15,6 +17,7 @@ class MainFragment : Fragment() {
 
     private val viewModel: MainViewModel by viewModel()
     private lateinit var binding: FragmentMainBinding
+    private val asteroidAdapter by lazy { AsteroidAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +31,21 @@ class MainFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
+        bindRecyclerView()
+
         return binding.root
+    }
+
+    private fun bindRecyclerView() {
+        binding.statusLoadingWheel.isVisible = true
+        binding.asteroidRecycler.adapter = asteroidAdapter
+
+        viewModel.asteroid.observe(viewLifecycleOwner, {
+            it?.let {
+                binding.statusLoadingWheel.visibility = View.GONE
+                asteroidAdapter.submitList(it)
+            }
+        })
     }
 
     private fun bindObservers() {

@@ -15,7 +15,7 @@ class AsteroidAdapter : ListAdapter<Asteroid, AsteroidAdapter.AsteroidViewHolder
         viewType: Int
     ): AsteroidAdapter.AsteroidViewHolder {
         return AsteroidViewHolder(
-            AsteroidListItemBinding.inflate(LayoutInflater.from(parent.context))
+            AsteroidListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
