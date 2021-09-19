@@ -9,9 +9,7 @@ val presentationModule = module {
     viewModel {
         MainViewModel(
             getPictureFromDb = get(),
-            getPictureFromNetworkUseCase = get(),
-            savePictureToDbUseCase = get(),
-            deletePicturesFromDbUseCase = get()
+            cacheNetworkPictureUseCase = get()
         )
     }
 }

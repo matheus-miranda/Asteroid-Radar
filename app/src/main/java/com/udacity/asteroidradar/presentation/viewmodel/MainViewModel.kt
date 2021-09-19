@@ -3,10 +3,8 @@ package com.udacity.asteroidradar.presentation.viewmodel
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.core.State
 import com.udacity.asteroidradar.domain.model.Picture
-import com.udacity.asteroidradar.domain.usecases.picture.DeletePicturesFromDbUseCase
+import com.udacity.asteroidradar.domain.usecases.picture.CacheNetworkPictureUseCase
 import com.udacity.asteroidradar.domain.usecases.picture.GetPictureFromDbUseCase
-import com.udacity.asteroidradar.domain.usecases.picture.GetPictureFromNetworkUseCase
-import com.udacity.asteroidradar.domain.usecases.picture.SavePictureToDbUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -16,9 +14,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val getPictureFromDb: GetPictureFromDbUseCase,
-    private val getPictureFromNetworkUseCase: GetPictureFromNetworkUseCase,
-    private val savePictureToDbUseCase: SavePictureToDbUseCase,
-    private val deletePicturesFromDbUseCase: DeletePicturesFromDbUseCase
+    private val cacheNetworkPictureUseCase: CacheNetworkPictureUseCase
 ) : ViewModel() {
 
     private val _pictureState = MutableLiveData<State<Picture>>()
@@ -26,7 +22,6 @@ class MainViewModel(
 
     init {
         refreshPictureCache()
-        //getPictures()
     }
 
     val picture = getPictureFromDb()
@@ -48,10 +43,7 @@ class MainViewModel(
 
     private fun refreshPictureCache() {
         viewModelScope.launch {
-            //val picture = getPictureFromNetworkUseCase(BuildConfig.API_KEY)
-            val picture = getPictureFromNetworkUseCase("DEMO_KEY")
-            deletePicturesFromDbUseCase()
-            savePictureToDbUseCase(picture)
+            cacheNetworkPictureUseCase("DEMO_KEY")
         }
     }
 }
