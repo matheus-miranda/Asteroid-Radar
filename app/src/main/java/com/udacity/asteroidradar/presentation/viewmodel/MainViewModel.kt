@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.presentation.viewmodel
 
 import androidx.lifecycle.*
+import com.udacity.asteroidradar.core.DateUtils
 import com.udacity.asteroidradar.core.State
 import com.udacity.asteroidradar.domain.model.Picture
 import com.udacity.asteroidradar.domain.usecases.asteroid.GetAsteroidsFromDbUseCase
@@ -25,6 +26,7 @@ class MainViewModel(
 
     private val _pictureState = MutableLiveData<State<Picture>>()
     val pictureState: LiveData<State<Picture>> get() = _pictureState
+    private val dateUtils by lazy { DateUtils() }
 
     init {
         refreshPictureCache()
@@ -58,7 +60,11 @@ class MainViewModel(
 
     private fun refreshAsteroidCache() {
         viewModelScope.launch {
-            val asteroidList = getAsteroidsFromNetworkUseCase("2021-09-19", "2021-09-26", "DEMO_KEY")
+            val asteroidList = getAsteroidsFromNetworkUseCase(
+                dateUtils.getTodayDate(),
+                dateUtils.getWeekFromNowDate(),
+                "DEMO_KEY"
+            )
             saveAsteroidsToDbUseCase(asteroidList.toTypedArray())
         }
     }
