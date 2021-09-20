@@ -33,7 +33,7 @@ class MainViewModel(
 
     val picture = getPictureFromDb()
 
-    val asteroid = getAsteroidsFromDbUseCase()
+    val asteroid = getAsteroidsFromDbUseCase(dateUtils.getTodayDate())
 
     private fun refreshPictureCache() {
         viewModelScope.launch {

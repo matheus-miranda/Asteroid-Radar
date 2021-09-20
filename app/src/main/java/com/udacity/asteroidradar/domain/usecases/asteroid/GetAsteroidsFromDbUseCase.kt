@@ -6,7 +6,7 @@ import com.udacity.asteroidradar.domain.repository.NasaRepository
 
 class GetAsteroidsFromDbUseCase(private val repository: NasaRepository) {
 
-    operator fun invoke(): LiveData<List<Asteroid>> {
-        return repository.getAsteroidsFromDatabase()
+    operator fun invoke(today: String): LiveData<List<Asteroid>> {
+        return repository.getWeekAsteroidsFromDatabase(today)
     }
 }
