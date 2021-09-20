@@ -10,7 +10,6 @@ class CacheNetworkAsteroidsUseCase(private val repository: NasaRepository) {
         apiKey: String
     ) {
         val networkAsteroids = repository.getAsteroidsFromNetwork(startDate, endDate, apiKey)
-        repository.deleteAsteroidsFromDatabase()
         repository.saveAsteroidsToDatabase(networkAsteroids.toTypedArray())
     }
 }

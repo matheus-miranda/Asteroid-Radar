@@ -9,9 +9,8 @@ import com.udacity.asteroidradar.core.DateUtils
 import com.udacity.asteroidradar.core.defaultValue
 import com.udacity.asteroidradar.domain.model.Asteroid
 import com.udacity.asteroidradar.domain.usecases.asteroid.AsteroidFilterUseCase
+import com.udacity.asteroidradar.domain.usecases.asteroid.CacheNetworkAsteroidsUseCase
 import com.udacity.asteroidradar.domain.usecases.asteroid.GetAsteroidsFromDbUseCase
-import com.udacity.asteroidradar.domain.usecases.asteroid.GetAsteroidsFromNetworkUseCase
-import com.udacity.asteroidradar.domain.usecases.asteroid.SaveAsteroidsToDbUseCase
 import com.udacity.asteroidradar.domain.usecases.picture.CacheNetworkPictureUseCase
 import com.udacity.asteroidradar.domain.usecases.picture.GetPictureFromDbUseCase
 import kotlinx.coroutines.launch
@@ -19,11 +18,10 @@ import kotlinx.coroutines.launch
 private const val API_KEY = BuildConfig.API_KEY
 
 class MainViewModel(
-    getPictureFromDb: GetPictureFromDbUseCase,
     private val cacheNetworkPictureUseCase: CacheNetworkPictureUseCase,
-    private val getAsteroidsFromNetworkUseCase: GetAsteroidsFromNetworkUseCase,
+    private val cacheNetworkAsteroidsUseCase: CacheNetworkAsteroidsUseCase,
+    getPictureFromDb: GetPictureFromDbUseCase,
     getAsteroidsFromDbUseCase: GetAsteroidsFromDbUseCase,
-    private val saveAsteroidsToDbUseCase: SaveAsteroidsToDbUseCase,
     asteroidFilterUseCase: AsteroidFilterUseCase
 ) : ViewModel() {
 
@@ -55,12 +53,9 @@ class MainViewModel(
 
     private fun refreshAsteroidCache() {
         viewModelScope.launch {
-            val asteroidList = getAsteroidsFromNetworkUseCase(
-                dateUtils.getTodayDate(),
-                dateUtils.getWeekFromNowDate(),
-                API_KEY
+            cacheNetworkAsteroidsUseCase(
+                dateUtils.getTodayDate(), dateUtils.getWeekFromNowDate(), API_KEY
             )
-            saveAsteroidsToDbUseCase(asteroidList.toTypedArray())
         }
     }
 
