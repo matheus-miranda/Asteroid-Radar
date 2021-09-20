@@ -1,10 +1,14 @@
 package com.udacity.asteroidradar.presentation.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.core.DateUtils
 import com.udacity.asteroidradar.core.defaultValue
 import com.udacity.asteroidradar.domain.model.Asteroid
+import com.udacity.asteroidradar.domain.usecases.asteroid.AsteroidFilterUseCase
 import com.udacity.asteroidradar.domain.usecases.asteroid.GetAsteroidsFromDbUseCase
 import com.udacity.asteroidradar.domain.usecases.asteroid.GetAsteroidsFromNetworkUseCase
 import com.udacity.asteroidradar.domain.usecases.asteroid.SaveAsteroidsToDbUseCase
@@ -19,7 +23,8 @@ class MainViewModel(
     private val cacheNetworkPictureUseCase: CacheNetworkPictureUseCase,
     private val getAsteroidsFromNetworkUseCase: GetAsteroidsFromNetworkUseCase,
     getAsteroidsFromDbUseCase: GetAsteroidsFromDbUseCase,
-    private val saveAsteroidsToDbUseCase: SaveAsteroidsToDbUseCase
+    private val saveAsteroidsToDbUseCase: SaveAsteroidsToDbUseCase,
+    asteroidFilterUseCase: AsteroidFilterUseCase
 ) : ViewModel() {
 
     private val _navigateToAsteroidDetails = MutableLiveData<Asteroid?>()
@@ -35,7 +40,7 @@ class MainViewModel(
 
     // Only the filtered list is exposed to the Fragment to be observed
     private val _asteroids = getAsteroidsFromDbUseCase(dateUtils.getTodayDate())
-    val filteredAsteroids = applyFilter(_asteroids, _asteroidFilter)
+    val filteredAsteroids = asteroidFilterUseCase(_asteroids, _asteroidFilter)
 
     init {
         refreshPictureCache()
@@ -75,26 +80,4 @@ class MainViewModel(
             _asteroidFilter.value = it
         }
     }
-
-    /**
-     * Applies the filter from the menu to the list of asteroids
-     *
-     * @return LiveData<List<Asteroid>> observable list with the filter applied
-     */
-    private fun applyFilter(
-        list: LiveData<List<Asteroid>>,
-        filter: LiveData<String>
-    ): LiveData<List<Asteroid>> =
-        Transformations.switchMap(filter) {
-            list.map { list ->
-                filter.value?.let {
-                    list.filter { asteroid ->
-                        val query = filter.value.toString()
-                        with(asteroid) {
-                            closeApproachDate.contains(query)
-                        }
-                    }
-                }
-            }
-        }
 }

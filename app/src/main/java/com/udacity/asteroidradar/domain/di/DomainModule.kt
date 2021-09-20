@@ -15,4 +15,5 @@ val domainModule = module {
     factory { GetPictureFromDbUseCase(repository = get()) }
     factory { GetPictureFromNetworkUseCase(repository = get()) }
     factory { SavePictureToDbUseCase(repository = get()) }
+    factory { AsteroidFilterUseCase() }
 }
