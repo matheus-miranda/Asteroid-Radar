@@ -7,6 +7,8 @@ apply plugin: 'kotlin-parcelize'
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
+    def localProperties = new Properties()
+    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
     defaultConfig {
         applicationId "com.udacity.asteroidradar"
         minSdkVersion 21
@@ -14,7 +16,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "API_KEY", "\"API_KEY\"")
+        buildConfigField("String", "API_KEY", "\"" + localProperties['apiKey'] + "\"")
     }
     buildTypes {
         release {

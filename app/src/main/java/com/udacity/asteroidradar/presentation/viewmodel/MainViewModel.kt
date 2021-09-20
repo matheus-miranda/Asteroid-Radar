@@ -1,10 +1,9 @@
 package com.udacity.asteroidradar.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.core.DateUtils
+import com.udacity.asteroidradar.core.defaultValue
 import com.udacity.asteroidradar.domain.model.Asteroid
 import com.udacity.asteroidradar.domain.usecases.asteroid.GetAsteroidsFromDbUseCase
 import com.udacity.asteroidradar.domain.usecases.asteroid.GetAsteroidsFromNetworkUseCase
@@ -12,6 +11,8 @@ import com.udacity.asteroidradar.domain.usecases.asteroid.SaveAsteroidsToDbUseCa
 import com.udacity.asteroidradar.domain.usecases.picture.CacheNetworkPictureUseCase
 import com.udacity.asteroidradar.domain.usecases.picture.GetPictureFromDbUseCase
 import kotlinx.coroutines.launch
+
+private const val API_KEY = BuildConfig.API_KEY
 
 class MainViewModel(
     getPictureFromDb: GetPictureFromDbUseCase,
@@ -26,18 +27,24 @@ class MainViewModel(
 
     private val dateUtils by lazy { DateUtils() }
 
+    // Filter value from the user selected overflow menu, empty default to get the whole list
+    private val _asteroidFilter = MutableLiveData<String>().defaultValue("")
+
+    // LiveData<Picture> from the database
+    val picture = getPictureFromDb()
+
+    // Only the filtered list is exposed to the Fragment to be observed
+    private val _asteroids = getAsteroidsFromDbUseCase(dateUtils.getTodayDate())
+    val filteredAsteroids = applyFilter(_asteroids, _asteroidFilter)
+
     init {
         refreshPictureCache()
         refreshAsteroidCache()
     }
 
-    val picture = getPictureFromDb()
-
-    val asteroid = getAsteroidsFromDbUseCase(dateUtils.getTodayDate())
-
     private fun refreshPictureCache() {
         viewModelScope.launch {
-            cacheNetworkPictureUseCase("DEMO_KEY")
+            cacheNetworkPictureUseCase(API_KEY)
         }
     }
 
@@ -46,7 +53,7 @@ class MainViewModel(
             val asteroidList = getAsteroidsFromNetworkUseCase(
                 dateUtils.getTodayDate(),
                 dateUtils.getWeekFromNowDate(),
-                "DEMO_KEY"
+                API_KEY
             )
             saveAsteroidsToDbUseCase(asteroidList.toTypedArray())
         }
@@ -59,4 +66,35 @@ class MainViewModel(
     fun navigateToDetailsComplete() {
         _navigateToAsteroidDetails.value = null
     }
+
+    /**
+     * Receives the filter value from the overflow menu in the fragment
+     */
+    fun updateFilter(filter: String) {
+        filter.let {
+            _asteroidFilter.value = it
+        }
+    }
+
+    /**
+     * Applies the filter from the menu to the list of asteroids
+     *
+     * @return LiveData<List<Asteroid>> observable list with the filter applied
+     */
+    private fun applyFilter(
+        list: LiveData<List<Asteroid>>,
+        filter: LiveData<String>
+    ): LiveData<List<Asteroid>> =
+        Transformations.switchMap(filter) {
+            list.map { list ->
+                filter.value?.let {
+                    list.filter { asteroid ->
+                        val query = filter.value.toString()
+                        with(asteroid) {
+                            closeApproachDate.contains(query)
+                        }
+                    }
+                }
+            }
+        }
 }

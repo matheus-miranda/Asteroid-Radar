@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.core.DateUtils
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.presentation.adapter.AsteroidAdapter
 import com.udacity.asteroidradar.presentation.adapter.ClickHandler
@@ -22,6 +23,7 @@ class MainFragment : Fragment() {
             viewModel.navigateToDetails(it)
         })
     }
+    private val dateUtils by lazy { DateUtils() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,17 +37,17 @@ class MainFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        bindRecyclerView()
+        setupRecyclerView()
         bindObservers()
 
         return binding.root
     }
 
-    private fun bindRecyclerView() {
+    private fun setupRecyclerView() {
         binding.statusLoadingWheel.isVisible = true
         binding.asteroidRecycler.adapter = asteroidAdapter
 
-        viewModel.asteroid.observe(viewLifecycleOwner, {
+        viewModel.filteredAsteroids.observe(viewLifecycleOwner, {
             it?.let {
                 binding.statusLoadingWheel.visibility = View.GONE
                 asteroidAdapter.submitList(it)
@@ -72,6 +74,13 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        viewModel.updateFilter(
+            when (item.itemId) {
+                R.id.today_asteroids -> dateUtils.getTodayDate()
+                R.id.saved_asteroids -> ""
+                else -> ""
+            }
+        )
         return true
     }
 }
