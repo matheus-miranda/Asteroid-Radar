@@ -26,6 +26,8 @@ interface NasaRepository {
 
     // NeoWs
 
+    fun getAllAsteroidsFromDatabase(): LiveData<List<Asteroid>>
+
     fun getWeekAsteroidsFromDatabase(today: String): LiveData<List<Asteroid>>
 
     suspend fun saveAsteroidsToDatabase(asteroidList: Array<Asteroid>)

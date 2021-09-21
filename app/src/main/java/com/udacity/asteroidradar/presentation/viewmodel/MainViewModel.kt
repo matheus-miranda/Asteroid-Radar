@@ -10,7 +10,8 @@ import com.udacity.asteroidradar.core.defaultValue
 import com.udacity.asteroidradar.domain.model.Asteroid
 import com.udacity.asteroidradar.domain.usecases.asteroid.AsteroidFilterUseCase
 import com.udacity.asteroidradar.domain.usecases.asteroid.CacheNetworkAsteroidsUseCase
-import com.udacity.asteroidradar.domain.usecases.asteroid.GetAsteroidsFromDbUseCase
+import com.udacity.asteroidradar.domain.usecases.asteroid.GetAllAsteroidsFromDbUseCase
+import com.udacity.asteroidradar.domain.usecases.asteroid.GetWeeklyAsteroidsFromDbUseCase
 import com.udacity.asteroidradar.domain.usecases.picture.CacheNetworkPictureUseCase
 import com.udacity.asteroidradar.domain.usecases.picture.GetPictureFromDbUseCase
 import kotlinx.coroutines.launch
@@ -21,7 +22,8 @@ class MainViewModel(
     private val cacheNetworkPictureUseCase: CacheNetworkPictureUseCase,
     private val cacheNetworkAsteroidsUseCase: CacheNetworkAsteroidsUseCase,
     getPictureFromDb: GetPictureFromDbUseCase,
-    getAsteroidsFromDbUseCase: GetAsteroidsFromDbUseCase,
+    getWeeklyAsteroidsFromDbUseCase: GetWeeklyAsteroidsFromDbUseCase,
+    getAllAsteroidsFromDbUseCase: GetAllAsteroidsFromDbUseCase,
     asteroidFilterUseCase: AsteroidFilterUseCase
 ) : ViewModel() {
 
@@ -37,7 +39,7 @@ class MainViewModel(
     val picture = getPictureFromDb()
 
     // Only the filtered list is exposed to the Fragment to be observed
-    private val _asteroids = getAsteroidsFromDbUseCase(dateUtils.getTodayDate())
+    private val _asteroids = getWeeklyAsteroidsFromDbUseCase(dateUtils.getTodayDate())
     val filteredAsteroids = asteroidFilterUseCase(_asteroids, _asteroidFilter)
 
     init {

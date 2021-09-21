@@ -11,8 +11,9 @@ val presentationModule = module {
             cacheNetworkPictureUseCase = get(),
             cacheNetworkAsteroidsUseCase = get(),
             getPictureFromDb = get(),
-            getAsteroidsFromDbUseCase = get(),
-            asteroidFilterUseCase = get(),
+            getWeeklyAsteroidsFromDbUseCase = get(),
+            getAllAsteroidsFromDbUseCase = get(),
+            asteroidFilterUseCase = get()
         )
     }
 }

@@ -74,6 +74,12 @@ class NasaRepositoryImpl(
      * Local
      ******************************************************************************/
 
+    override fun getAllAsteroidsFromDatabase(): LiveData<List<Asteroid>> {
+        return Transformations.map(asteroidDao.getAllAsteroids()) {
+            it.asDomainObject()
+        }
+    }
+
     override fun getWeekAsteroidsFromDatabase(today: String): LiveData<List<Asteroid>> {
         val asteroids = Transformations.map(asteroidDao.getWeeklyAsteroids(today)) {
             it.asDomainObject()

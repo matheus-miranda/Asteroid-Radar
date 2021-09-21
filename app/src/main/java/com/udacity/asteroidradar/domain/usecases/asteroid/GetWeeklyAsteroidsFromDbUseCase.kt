@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import com.udacity.asteroidradar.domain.model.Asteroid
 import com.udacity.asteroidradar.domain.repository.NasaRepository
 
-class GetAsteroidsFromDbUseCase(private val repository: NasaRepository) {
+class GetWeeklyAsteroidsFromDbUseCase(private val repository: NasaRepository) {
 
     operator fun invoke(today: String): LiveData<List<Asteroid>> {
         return repository.getWeekAsteroidsFromDatabase(today)

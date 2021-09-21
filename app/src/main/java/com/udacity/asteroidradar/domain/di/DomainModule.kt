@@ -7,7 +7,7 @@ import org.koin.dsl.module
 val domainModule = module {
     factory { CacheNetworkAsteroidsUseCase(repository = get()) }
     factory { DeleteAsteroidsFromDbUseCase(repository = get()) }
-    factory { GetAsteroidsFromDbUseCase(repository = get()) }
+    factory { GetWeeklyAsteroidsFromDbUseCase(repository = get()) }
     factory { GetAsteroidsFromNetworkUseCase(repository = get()) }
     factory { SaveAsteroidsToDbUseCase(repository = get()) }
     factory { CacheNetworkPictureUseCase(repository = get()) }
@@ -15,5 +15,6 @@ val domainModule = module {
     factory { GetPictureFromDbUseCase(repository = get()) }
     factory { GetPictureFromNetworkUseCase(repository = get()) }
     factory { SavePictureToDbUseCase(repository = get()) }
+    factory { GetAllAsteroidsFromDbUseCase(repository = get()) }
     factory { AsteroidFilterUseCase() }
 }
