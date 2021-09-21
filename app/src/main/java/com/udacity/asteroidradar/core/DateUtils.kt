@@ -18,4 +18,15 @@ class DateUtils {
         return dateFormat.format(calendar.time)
     }
 
+    fun getDatesForTheWeek(): String {
+        val sb = StringBuilder()
+        sb.append(getTodayDate() + " ")
+        for (days in 1..6) {
+            val calendar = Calendar.getInstance()
+            calendar.add(Calendar.DAY_OF_YEAR, days)
+            sb.append(dateFormat.format(calendar.time) + " ")
+        }
+        return sb.trim().toString()
+    }
+
 }

@@ -17,7 +17,7 @@ class AsteroidFilterUseCase {
                     list.filter { asteroid ->
                         val query = filter.value.toString()
                         with(asteroid) {
-                            closeApproachDate.contains(query)
+                            (closeApproachDate.contains(query) || closeApproachDate in query)
                         }
                     }
                 }

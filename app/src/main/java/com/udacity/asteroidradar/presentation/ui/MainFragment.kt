@@ -77,7 +77,7 @@ class MainFragment : Fragment() {
         viewModel.updateFilter(
             when (item.itemId) {
                 R.id.today_asteroids -> dateUtils.getTodayDate()
-                R.id.saved_asteroids -> ""
+                R.id.week_asteroids ->  dateUtils.getDatesForTheWeek()
                 else -> ""
             }
         )
