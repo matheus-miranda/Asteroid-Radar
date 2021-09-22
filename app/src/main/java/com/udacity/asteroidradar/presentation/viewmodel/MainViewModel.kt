@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.udacity.asteroidradar.BuildConfig
+import com.udacity.asteroidradar.core.Constants
 import com.udacity.asteroidradar.core.DateUtils
 import com.udacity.asteroidradar.core.defaultValue
 import com.udacity.asteroidradar.domain.model.Asteroid
@@ -14,8 +14,6 @@ import com.udacity.asteroidradar.domain.usecases.asteroid.GetAllAsteroidsFromDbU
 import com.udacity.asteroidradar.domain.usecases.picture.CacheNetworkPictureUseCase
 import com.udacity.asteroidradar.domain.usecases.picture.GetPictureFromDbUseCase
 import kotlinx.coroutines.launch
-
-private const val API_KEY = BuildConfig.API_KEY
 
 class MainViewModel(
     private val cacheNetworkPictureUseCase: CacheNetworkPictureUseCase,
@@ -47,14 +45,14 @@ class MainViewModel(
 
     private fun refreshPictureCache() {
         viewModelScope.launch {
-            cacheNetworkPictureUseCase(API_KEY)
+            cacheNetworkPictureUseCase(Constants.API_KEY)
         }
     }
 
     private fun refreshAsteroidCache() {
         viewModelScope.launch {
             cacheNetworkAsteroidsUseCase(
-                dateUtils.getTodayDate(), dateUtils.getWeekFromNowDate(), API_KEY
+                dateUtils.getTodayDate(), dateUtils.getWeekFromNowDate(), Constants.API_KEY
             )
         }
     }
