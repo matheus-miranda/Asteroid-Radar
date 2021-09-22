@@ -56,6 +56,16 @@ fun bindAstronomyPicture(imageView: ImageView, imageUrl: String?) {
     }
 }
 
+@BindingAdapter("astronomyPictureDescription")
+fun bindAstronomyPictureContent(imageView: ImageView, description: String?) {
+    description?.let {
+        imageView.contentDescription = imageView.context.getString(
+            R.string.nasa_picture_of_day_content_description_format,
+            description
+        )
+    }
+}
+
 @BindingAdapter("apiText")
 fun bindSimpleText(textView: TextView, title: String?) {
     title?.let {

@@ -28,9 +28,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:contentDescription="@string/apod"
+                android:contentDescription="@string/this_is_nasa_s_picture_of_day_showing_nothing_yet"
                 android:scaleType="centerCrop"
                 app:astronomyPicture="@{viewModel.picture.url}"
+                app:astronomyPictureDescription="@{viewModel.picture.title}"
                 tools:srcCompat="@drawable/placeholder_picture_of_day" />
 
             <TextView
