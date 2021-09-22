@@ -28,6 +28,9 @@ It can filter by weekly, daily or all of the saved asteroids. Accessibility enab
   </tr>
 </table>
 
+### In use
+<img src="https://user-images.githubusercontent.com/15269393/134402270-e73106c9-a42b-498e-b8a0-b676729f2b52.gif" />
+
 ### Dependencies
 
 ```
