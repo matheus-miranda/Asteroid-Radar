@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.udacity.asteroidradar.presentation.ui.DetailFragment"
-        android:label=''
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_detail">
 
         <argument
