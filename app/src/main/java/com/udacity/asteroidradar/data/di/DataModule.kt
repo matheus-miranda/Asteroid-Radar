@@ -23,7 +23,9 @@ val networkModule = module {
         val interceptor = HttpLoggingInterceptor { logger ->
             Timber.e("OkHttp: $logger")
         }
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        interceptor.level = HttpLoggingInterceptor.Level.NONE
+        interceptor.redactHeader("Authorization")
+        interceptor.redactHeader("Cookie")
         OkHttpClient.Builder()
             .addInterceptor(interceptor)
             .build()
